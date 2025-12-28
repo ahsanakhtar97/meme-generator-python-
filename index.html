@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON MEME LAB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- CSS Variables for Neon Colors --- */
+        :root {
+            --dark-background: #0d0d0d;
+            --card-background: #1a1a1a;
+            --text-color: #f5f5f5;
+            --neon-green: #39FF14;
+            --neon-magenta: #FF1493;
+            --neon-cyan: #14FFEC;
+            --primary-shadow: 0 0 5px var(--neon-green), 0 0 15px var(--neon-green);
+            --shadow-color: rgba(0, 0, 0, 0.7);
+            --input-bg: #2b2b2b;
+        }
+
+        /* --- General Styles --- */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--dark-background) 0%, #151515 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- Main App Container (The Outer Neon Box) --- */
+        .app-shell {
+            width: 100%;
+            max-width: 900px; /* Wider container for two-column layout */
+            background-color: var(--card-background);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px var(--shadow-color), 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-magenta);
+            border: 3px solid #1a1a1a;
+            position: relative;
+            flex-grow: 1;
+        }
+        
+        /* Header Styling */
+        .header {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--text-color);
+            font-size: 3em;
+            font-weight: 700;
+            text-shadow: 0 0 5px var(--neon-cyan);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h1 i { /* Icon style */
+            color: var(--neon-magenta);
+            margin-left: 10px;
+            font-size: 0.8em;
+            text-shadow: 0 0 10px var(--neon-magenta);
+        }
+        
+        .header-subtitle {
+            color: #b0b0b0;
+            font-size: 1.1em;
+            margin-left: 5px; /* Alignment fix */
+        }
+
+        /* --- Main Content Layout (Two Columns) --- */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap; /* Allows columns to stack on smaller screens */
+        }
+
+        .input-panel, .result-panel {
+            min-width: 350px;
+            flex: 1;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #222222;
+        }
+
+        .input-panel {
+             box-shadow: 0 0 10px var(--shadow-color);
+        }
+
+        /* Input Group Label */
+        .input-panel h3 {
+            color: var(--neon-cyan);
+            margin-top: 0;
+            border-bottom: 1px dashed rgba(57, 255, 20, 0.2);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Input Styles --- */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b0b0b0;
+            font-size: 0.9em;
+        }
+
+        input[type="text"] {
+            padding: 12px 15px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            border-color: var(--neon-green);
+            outline: none;
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.6); 
+        }
+
+        /* --- Button Styles --- */
+        button {
+            padding: 14px 18px;
+            margin-top: 25px; /* Increased margin since other inputs are gone */
+            width: 100%;
+            box-sizing: border-box;
+            background-color: var(--neon-green);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 5px 0 0 #28a00e; 
+            transition: background-color 0.15s, transform 0.15s, box-shadow 0.15s;
+        }
+
+        button:hover {
+            background-color: #55ff33; 
+        }
+        
+        button:active {
+            transform: translateY(5px);
+            box-shadow: 0 0px 0 0 #28a00e; 
+        }
+
+        /* --- Result Panel (The Green Bordered Box) --- */
+        .result-panel {
+            background-color: #1f1f1f;
+            border: 3px solid var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green), 0 0 20px rgba(57, 255, 20, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .result-panel h3 {
+            color: var(--neon-magenta);
+            text-shadow: 0 0 5px var(--neon-magenta);
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        #result { 
+            text-align: center; 
+            width: 100%;
+        }
+        
+        #result img { 
+            max-width: 100%; 
+            border-radius: 8px; 
+            box-shadow: 0 5px 15px var(--shadow-color); 
+            cursor: pointer; 
+            transition: transform 0.3s;
+        }
+
+        #result img:hover {
+            transform: scale(1.02); 
+        }
+
+        /* Caption Output Display */
+        .caption-output {
+            margin-top: 15px; 
+            font-size: 0.9em; 
+            color: var(--text-color); 
+            text-align: center; 
+            padding: 10px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Copy Success Message */
+        .copy-message {
+            position: absolute;
+            bottom: 30px; 
+            right: 30px;
+            background: rgba(57, 255, 20, 0.95);
+            color: var(--dark-background);
+            padding: 8px 15px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none; 
+            z-index: 10;
+            font-weight: 700;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.8); 
+        }
+        
+        .copy-text {
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #b0b0b0;
+            margin-top: 10px;
+        }
+
+        /* --- Loader Styles (Kept the pulsating ring) --- */
+        .loader-ring {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(57, 255, 20, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--neon-green);
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite, pulse-glow 2s infinite alternate;
+            margin: 20px auto 10px auto;
+        }
+
+        #loader-text {
+            color: var(--neon-green); 
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.4);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 5px var(--neon-green); }
+            to { box-shadow: 0 0 15px var(--neon-green); }
+        }
+
+        /* --- Footer (Team Info) --- */
+        .footer {
+            margin-top: 30px; 
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.85em;
+            color: #999999;
+            width: 100%;
+            max-width: 900px;
+        }
+        
+        .footer ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .footer li {
+            margin-bottom: 5px;
+            color: var(--neon-cyan);
+        }
+
+        .footer li i {
+            color: var(--neon-magenta);
+            margin-right: 5px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 800px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .input-panel, .result-panel {
+                min-width: unset;
+                width: 100%;
+            }
+            .app-shell {
+                padding: 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <div class="header">
+            <h1>NEON MEME LAB <i class="fas fa-rocket"></i></h1>
+            <p class="header-subtitle">Synthesize your humor. (AI generates image & captions)</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-panel">
+                <h3>Input Controls</h3>
+
+                <div class="input-group">
+                    <label for="prompt">Meme Concept / Image Prompt</label>
+                    <input type="text" id="prompt" placeholder="A sloth in a business suit coding" required>
+                </div>
+                
+                <button onclick="generateMeme()">GENERATE MEME</button>
+
+                <div id="loader-container" style="display: none;">
+                    <div class="loader-ring"></div>
+                    <h3 id="loader-text">Synthesizing Humor...</h3>
+                </div>
+            </div>
+
+            <div class="result-panel">
+                <h3>Result Output</h3>
+                
+                <div id="result">
+                    <p style="color: #666; margin-top: 20px;">Your meme will appear here.</p>
+                    <div id="copy-message" class="copy-message">URL COPIED!</div>
+                </div>
+
+                <div id="caption-output" class="caption-output">
+                   *Your meme will appear here*
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Developed by:
+            <ul>
+                <li><i class="fas fa-user-check"></i> Ahsan Akhtar - 22k-4021</li>
+                <li><i class="fas fa-robot"></i> Hani Siraj - 22k-8710</li>
+                <li><i class="fas fa-brain"></i> Aamina - 22k-4040</li>
+                <li><i class="fas fa-code"></i> Zoha Zafar - 22k-4088</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function generateMeme() {
+            const prompt = document.getElementById('prompt').value;
+            // topText and bottomText inputs are no longer needed
+            
+            const loaderContainer = document.getElementById('loader-container');
+            const resultDiv = document.getElementById('result');
+            const captionOutputDiv = document.getElementById('caption-output');
+            
+            if (!prompt) return alert("Please enter a meme concept.");
+
+            // Reset UI and Show Loader
+            loaderContainer.style.display = 'block';
+            resultDiv.innerHTML = `<div id="copy-message" class="copy-message">URL COPIED!</div>`; 
+            captionOutputDiv.innerHTML = 'Synthesizing Humor...'; 
+
+            try {
+                // Simplified payload: only send prompt, and empty strings for text so backend knows to generate them
+                const response = await fetch('/generate-meme', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        prompt: prompt, 
+                        
+                    }) 
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const imageUrl = data.image_url;
+                    
+                    // Display image and attach click handler for copy
+                    resultDiv.innerHTML = `
+                        <img src="${imageUrl}" alt="Generated Meme" onclick="copyImageLink('${window.location.origin}${imageUrl}')">
+                        <p class="copy-text" onclick="copyImageLink('${window.location.origin}${imageUrl}')">COPY URL</p>
+                        <div id="copy-message" class="copy-message">URL COPIED!</div>
+                    `;
+                    
+                    // Display generated captions
+                    captionOutputDiv.innerHTML = `
+                        **AI Generated Captions:**<br>
+                        Top: *${data.top_text_used || 'N/A'}* | Bottom: *${data.bottom_text_used || 'N/A'}*
+                    `;
+                } else {
+                    alert('Server Error: ' + JSON.stringify(data.detail || data));
+                }
+            } catch (error) {
+                alert('Connection failed. Is the FastAPI server running on http://127.0.0.1:8000?');
+            } finally {
+                // Hide Loader
+                loaderContainer.style.display = 'none';
+            }
+        }
+        
+        function copyImageLink(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const copyMessage = document.getElementById('copy-message');
+                copyMessage.style.opacity = '1';
+                setTimeout(() => {
+                    copyMessage.style.opacity = '0';
+                }, 1500); // Fade out after 1.5 seconds
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

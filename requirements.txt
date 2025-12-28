@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+
+Pillow
+python-dotenv
+
+diffusers
+transformers
+accelerate
+torch
+
+google-genai
+
+requests
+tqdm
